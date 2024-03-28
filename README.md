@@ -30,6 +30,11 @@ $ pip install chromadb
 $ chroma run
 ```
 
+Get an OpanAI API key, and set the `OPENAI_API_KEY` environment variable.
+```
+$ export OPENAI_API_KEU=sk-dfgdfgdfgsdjhgdkjfghskdjfhgdskjfhgkjhg
+```
+
 Now run the example:
 ```
 $ sbcl --eval "(asdf:load-system :rag)" --eval "(rag::run)"
