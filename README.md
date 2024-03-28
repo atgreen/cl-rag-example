@@ -32,7 +32,7 @@ $ chroma run
 
 Get an OpenAI API key, and set the `OPENAI_API_KEY` environment variable.
 ```
-$ export OPENAI_API_KEU=sk-dfgdfgdfgsdjhgdkjfghskdjfhgdskjfhgkjhg
+$ export OPENAI_API_KEY=sk-dfgdfgdfgsdjhgdkjfghskdjfhgdskjfhgkjhg
 ```
 
 Now run the example:
