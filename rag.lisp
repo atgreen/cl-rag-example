@@ -36,8 +36,7 @@
   (let* ((text (uiop:run-program `("pdftotext" "-layout" "-enc" "UTF-8" ,pdf-file "-")
                                  :output '(:string)))
          (pages (split-sequence:split-sequence #\Page text)))
-    ;; Writes pages to files with 3 pages per file, overlapping by one
-    ;; page on either side.
+    ;; Create LLM embeddings for every 3 pages, overlapping by one page on either side.
     (let ((embedder (make-instance 'embeddings:openai-embeddings :api-key +openai-api-key+))
           (collection (chroma:create-collection :name +collection-name+ :get-or-create t :server +chroma-server+)))
       (let ((files (loop for i from 0 to (- (length pages) 3) by 2

@@ -8,7 +8,7 @@ RAG-assisted generative AI to answer questions.
 To support this task, we use:
 * [cl-embeddings](https://github.com/atgreen/cl-embeddings) for LLM embeddings.
 * [cl-completions](https://github.com/atgreen/cl-completions) for LLM completions.
-* [cl-chroma](https://github.com/atgreen/cl-chroma) for the vector DB inteface.
+* [cl-chroma](https://github.com/atgreen/cl-chroma) for the vector DB interface.
 
 Usage
 ------
