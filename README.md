@@ -30,7 +30,7 @@ $ pip install chromadb
 $ chroma run
 ```
 
-Get an OpanAI API key, and set the `OPENAI_API_KEY` environment variable.
+Get an OpenAI API key, and set the `OPENAI_API_KEY` environment variable.
 ```
 $ export OPENAI_API_KEU=sk-dfgdfgdfgsdjhgdkjfghskdjfhgdskjfhgkjhg
 ```
