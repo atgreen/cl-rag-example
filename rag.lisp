@@ -45,7 +45,7 @@
                                    (content (apply #'concatenate 'string (subseq pages start end)))
                                    (embedding (embeddings:get-embedding embedder content)))
                               (chroma:add (gethash "id" collection)
-                                          :documents (list content) :embeddings (list embedding) :ids (list i) :server +chroma-server+)))))))))
+                                          :documents (list content) :embeddings (list embedding) :ids (list (write-to-string i)) :server +chroma-server+)))))))))
 
 ;; For this example, I downloaded the 2023 NVidia annual report from here:
 ;; https://s201.q4cdn.com/141608511/files/doc_financials/2023/ar/2023-Annual-Report-1.pdf
