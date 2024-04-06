@@ -31,4 +31,4 @@
   :serial t
   :components ((:file "package")
                (:file "rag"))
-  :depends-on (:chroma :embeddings :completions))
+  :depends-on (:chroma :embeddings :completions :text-splitter))

@@ -33,19 +33,19 @@
 (defparameter +openai-api-key+ (uiop:getenv "OPENAI_API_KEY"))
 
 (defun ingest (pdf-file)
-  (let* ((text (uiop:run-program `("pdftotext" "-layout" "-enc" "UTF-8" ,pdf-file "-")
-                                 :output '(:string)))
-         (pages (split-sequence:split-sequence #\Page text)))
-    ;; Create LLM embeddings for every 3 pages, overlapping by one page on either side.
-    (let ((embedder (make-instance 'embeddings:openai-embeddings :api-key +openai-api-key+))
-          (collection (chroma:create-collection :name +collection-name+ :get-or-create t :server +chroma-server+)))
-      (let ((files (loop for i from 0 to (- (length pages) 3) by 2
-                         do (let* ((start (max 0 (- i 1)))
-                                   (end (min (+ i 4) (length pages)))
-                                   (content (apply #'concatenate 'string (subseq pages start end)))
-                                   (embedding (embeddings:get-embedding embedder content)))
-                              (chroma:add (gethash "id" collection)
-                                          :documents (list content) :embeddings (list embedding) :ids (list (write-to-string i)) :server +chroma-server+)))))))))
+  (let ((chunks (text-splitter:split (text-splitter:make-document-from-file pdf-file)
+                                     :size 5000
+                                     :overlap 200))
+        (embedder (make-instance 'embeddings:openai-embeddings :api-key +openai-api-key+))
+        (collection (chroma:create-collection :name +collection-name+ :get-or-create t :server +chroma-server+)))
+    (loop with i = 0
+          for chunk in chunks do
+            (progn
+              (chroma:add (gethash "id" collection)
+                          :documents (list chunk)
+                          :embeddings (list (embeddings:get-embedding embedder chunk))
+                          :ids (list (write-to-string (+ 1000 (incf i))))
+                          :server +chroma-server+)))))
 
 ;; For this example, I downloaded the 2023 NVidia annual report from here:
 ;; https://s201.q4cdn.com/141608511/files/doc_financials/2023/ar/2023-Annual-Report-1.pdf
@@ -73,7 +73,7 @@
   (print (let ((c (make-instance 'completions:openai-completer
                                  :api-key +openai-api-key+
                                  :tools '(rag-lookup))))
-           (completions:get-completion c "How quickly is NVidia's business growing?  Provide some evidence." 1000))))
+           (completions:get-completion c "Is NVidia growing?  Show some evidence."))))
 
 #|
 The above code will emit something like the following:
